@@ -17,15 +17,21 @@ app.get('/', function (req, res) {
    res.send('Hello World');
 })
 
+
+var tasks = [];
+
 app.post('/createTask',function(req,res){
 	console.log(req.body);
+	tasks.push(req.body);
 	res.send("OK I got a new Task");
 });
+
+app.get('/getTasks',function(req,res){
+	res.send(tasks);
+});
+
 var server = app.listen(8080, function () {
- 
   var host = server.address().address
-  var port = server.address().port
- 
+  var port = server.address().port 
   console.log("应用实例，访问地址为 http://%s:%s", host, port)
- 
 })
