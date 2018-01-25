@@ -14,11 +14,15 @@
       "list": [
         {
           "pagePath": "pages/index/index",
-          "text": "新建任务"
+          "text": "创建任务"
         },
         {
           "pagePath": "pages/logs/logs",
-          "text": "任务列表"
+          "text": "我的任务"
+        },
+        {
+          "pagePath": "pages/logs/logs",
+          "text": "我创建的任务"
         },
         {
            "pagePath": "pages/my/my",
