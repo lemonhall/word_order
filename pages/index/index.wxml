@@ -1,0 +1,9 @@
+<!--index.wxml-->
+<view class="task-title">
+  <input placeholder="任务名"/>
+</view>
+<view class="task-content">
+  <textarea placeholder="任务内容"/>
+</view>
+<button type="primary" size="default" loading="false" plain="default"
+        disabled="false" bindtap="primary"> primary </button>

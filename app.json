@@ -1,0 +1,29 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/my/my"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "工单系统",
+    "navigationBarTextStyle":"black"
+  },
+    "tabBar": {
+      "list": [
+        {
+          "pagePath": "pages/index/index",
+          "text": "新建任务"
+        },
+        {
+          "pagePath": "pages/logs/logs",
+          "text": "任务列表"
+        },
+        {
+           "pagePath": "pages/my/my",
+           "text": "我的"
+        }
+      ]
+    }
+}
