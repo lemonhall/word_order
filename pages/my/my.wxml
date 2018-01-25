@@ -1,9 +1,13 @@
 <!--index.wxml-->
-<view class="task-title">
-  <input placeholder="任务名"/>
+<view class="container">
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <view class="usermotto">
+    <text class="user-motto">{{motto}}</text>
+  </view>
 </view>
-<view class="task-content">
-  <textarea placeholder="任务内容"/>
-</view>
-<button type="primary" size="default" loading="false" plain="default"
-        disabled="false" bindtap="primary"> primary </button>
