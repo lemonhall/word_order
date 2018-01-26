@@ -3,7 +3,7 @@
 const app = getApp();
 var taskTitle   = '';
 var taskContent = '';
-let URL ='http://localhost:8080';
+let URL ='http://f01e3c07.ngrok.io';
 
 Page({
   data: {
@@ -29,7 +29,7 @@ Page({
   createTask:function(e){
     console.log("onClick with button");
     wx.request({
-      url: 'http://192.168.50.12:8080/createTask/', //仅为示例，并非真实的接口地址,
+      url: URL +'/createTask/', //仅为示例，并非真实的接口地址,
       method:'POST',
       data: {
         taskTitle,

@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 const https = require('https');
 const queryString = require('querystring');
+var request = require('request');
 var sessions = {};
 var access_token = "";
 var form_id = "";
@@ -29,7 +30,7 @@ var tasks = [];
 app.post('/createTask',function(req,res){
 	console.log(req.body);
 	tasks.push(req.body);
-	sendTempleMessage(g_openId,form_id,"");
+		sendTempleMessage(g_openId,form_id,"");
 	res.send("OK I got a new Task");
 });
 
@@ -83,11 +84,12 @@ getACCESS_TOKEN();
 
 //发送消息
 var sendTempleMessage = function(toUser,formid,msg){
+	console.log("access_token::::"+access_token);
 //发送模板消息的文档地址：
 //https://mp.weixin.qq.com/debug/wxadoc/dev/api/notice.html#%E6%A8%A1%E7%89%88%E6%B6%88%E6%81%AF%E7%AE%A1%E7%90%86
 //接口地址：
 //https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=ACCESS_TOKEN
-var HOST = 'api.weixin.qq.com';
+var HOST = 'https://api.weixin.qq.com';
 var PATH = '/cgi-bin/message/wxopen/template/send?access_token='+access_token;
 
 // touser	是	接收者（用户）的 openid
@@ -98,39 +100,52 @@ var PATH = '/cgi-bin/message/wxopen/template/send?access_token='+access_token;
 // color	否	模板内容字体的颜色，不填默认黑色
 // emphasis_keyword	否	模板需要放大的关键词，不填则默认无放大
 
-const DATA = {
-		touser : toUser,
-		template_id : 'yVsHzvIMduPW2InrNQLA-oyf5JDO8i5I-hZh_O8xW84',
-		form_id : formid,
-		data : '',
-};
+var url=HOST+PATH;
+// var requestData={
+// 			"touser" : toUser,
+// 			"template_id" : 'yVsHzvIMduPW2InrNQLA-oyf5JDO8i5I-hZh_O8xW84',
+// 			"form_id" : formid,
+// 			"data"    : ''
+// 	};
 
-var OPTIONS = {
-		host : HOST,
-		path : PATH,
-		method : 'POST',
-};
-
-	let wxReq = https.request(OPTIONS, (res) => {
-			if(res.statusCode == 200){
-				let json = '';
-				res.on('data' , (data) => {
-					json+=data;
-				});
-				res.on('end' , () => {
-					console.log(json);
-					json =JSON.parse(json);
-					console.log(json);
-					access_token = json.access_token;
-
-				});
-			}else{
-				console.log("sendTempleMessage---errCode:"+res.statusCode);
-			}
-		});
-		wxReq.end();
+var requestData = {
+  "touser": toUser,  
+  "template_id": 'yVsHzvIMduPW2InrNQLA-oyf5JDO8i5I-hZh_O8xW84', 
+  "page": "index",          
+  "form_id": formid,         
+  "data": {}
+}
+console.log("====begin sending msg====");
+console.log("g_openId:"+g_openId);
+console.log("form_id:"+form_id);
+console.log("url:"+url);
+console.log(JSON.stringify(requestData));
+request({
+    url: url,
+    method: "POST",
+    json: true,
+    headers: {
+        "content-type": "application/json",
+    },
+    body: requestData
+}, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+        console.log(body) // 请求成功的处理逻辑
+    }else{
+    	console.log("=====error=====");
+    	console.log(error);
+    }
+}); 
 
 }
+//END of 发送消息
+
+setTimeout(function(){
+		sendTempleMessage('oYTLw0KYsnWDpWBFAUeOowQnZVhc',
+			'3bc946297b6e8491e58df8072c5ad416',
+			'');
+},2000);
+
 
 //得到formId的方法
 app.post('/putFormId',function(req,res){
