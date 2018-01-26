@@ -3,6 +3,7 @@
 const app = getApp();
 var taskTitle   = '';
 var taskContent = '';
+let URL ='http://localhost:8080';
 
 Page({
   data: {
@@ -47,5 +48,30 @@ Page({
     wx.showShareMenu({
       withShareTicket: true
     });
+
+    wx.login({
+        success: res => {
+          // 发送 res.code 到后台换取 openId, sessionKey, unionId
+          if (res.code) {
+            wx.request({
+              url: URL+'/register',
+              data: {
+                code: res.code,
+              },
+              success: function (res) {
+                if (res.statusCode == 200) {
+                  console.log(res.data);
+                  // wx.setStorageSync('sessionId', res.data.data.sessionId);
+                  //session.sessionId = res.data.data.sessionId;
+                  // let sessionId = wx.getStorageSync('sessionId');
+                
+                }
+              },
+            });
+          } else {
+            console.log(res.errMsg);
+          }
+        }
+      })
   }  
 })
