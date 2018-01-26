@@ -15,6 +15,27 @@ Page({
       url: '../logs/logs'
     })
   },
+  launchAppError: function (e) {
+    console.log(e.detail.errMsg)
+  },
+  getSendPoint: function (event){
+    console.log(event.detail.formId);
+    var formId = event.detail.formId;
+    wx.request({
+      url: 'http://f01e3c07.ngrok.io/putFormId/', //仅为示例，并非真实的接口地址,
+      method: 'POST',
+      data: {
+        formId
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        console.log(res.data)
+      }
+    });
+    //END of request...
+  },
   onLoad: function () {
     if (app.globalData.userInfo) {
       console.log(app.globalData.userInfo);

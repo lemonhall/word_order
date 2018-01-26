@@ -7,6 +7,16 @@
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
+
+
+<form bindsubmit="getSendPoint" report-submit='true'>
+  <view class="btn-area">
+    <button formType="submit" name='getSendPoint'>获取发送点数</button>
+  </view>
+</form>
+
+<button open-type="launchApp" app-parameter="wechat" binderror="launchAppError">打开APP</button>
+
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>

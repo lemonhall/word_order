@@ -6,6 +6,8 @@ const https = require('https');
 const queryString = require('querystring');
 var sessions = {};
 var access_token = "";
+var form_id = "";
+var g_openId  = "";
 
 // 创建 application/x-www-form-urlencoded 编码解析
 // var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -27,6 +29,7 @@ var tasks = [];
 app.post('/createTask',function(req,res){
 	console.log(req.body);
 	tasks.push(req.body);
+	sendTempleMessage(g_openId,form_id,"");
 	res.send("OK I got a new Task");
 });
 
@@ -79,7 +82,7 @@ getACCESS_TOKEN();
 
 
 //发送消息
-var sendTempleMessage = function(toUser,msg){
+var sendTempleMessage = function(toUser,formid,msg){
 //发送模板消息的文档地址：
 //https://mp.weixin.qq.com/debug/wxadoc/dev/api/notice.html#%E6%A8%A1%E7%89%88%E6%B6%88%E6%81%AF%E7%AE%A1%E7%90%86
 //接口地址：
@@ -98,8 +101,8 @@ var PATH = '/cgi-bin/message/wxopen/template/send?access_token='+access_token;
 const DATA = {
 		touser : toUser,
 		template_id : 'yVsHzvIMduPW2InrNQLA-oyf5JDO8i5I-hZh_O8xW84',
-		form_id : '',
-		data : 'a',
+		form_id : formid,
+		data : '',
 };
 
 var OPTIONS = {
@@ -129,6 +132,13 @@ var OPTIONS = {
 
 }
 
+//得到formId的方法
+app.post('/putFormId',function(req,res){
+	console.log("/putFormId=====begin");
+	console.log(req.body);
+	form_id = req.body.formId;
+	res.send("OK I got a new FormId:"+form_id);
+});
 
 //得到openId的方法
 app.get('/register',function(req,res){
@@ -167,6 +177,7 @@ const OPTION = {
 					json =JSON.parse(json);
 					let openId = json.openid;
 					sessions[openId] = openId;
+					g_openId = openId;
 					console.log(openId);
 					otherRes.type('application/json');
 					otherRes.json({
